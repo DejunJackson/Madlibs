@@ -19,10 +19,17 @@ def show_leaderboards(players):
 
     if len(players) == 0:
         print('\nThere are no scores to print at this time. Go play some games!')
+    elif len(players) == 1:
+        print("------------------------------------------")
+        print("|    Player                Score         |")
+        print("------------------------------------------")
+        print(
+            f'\n     1.{players[0].name}                    {players[0].score}')
     else:
         for player in players:
             dup = False
             duplicate = player
+
             for player_check in leaderboards:
                 if duplicate.name == player_check.name:
                     dup = True
@@ -38,9 +45,11 @@ def show_leaderboards(players):
         next_score = leaderboards[j+1].score
         player = leaderboards[j]
         next_player = leaderboards[j+1]
+
         if score < next_score:
             leaderboards[j] = next_player
             leaderboards[j+1] = player
+
     print("------------------------------------------")
     print("|    Player                Score         |")
     print("------------------------------------------")

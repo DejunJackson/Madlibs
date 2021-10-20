@@ -1,0 +1,1 @@
+winner = current_players[0]

@@ -1,6 +1,6 @@
 from game_pkg.player import Player
 from game_pkg.menu import main_menu, show_leaderboards
-from game_pkg.stories import story_one
+from game_pkg.stories import story
 
 all_players = []
 while True:
@@ -10,15 +10,19 @@ while True:
         print("Welcome!")
         numOfPlayers = int(input("How many Players are there? "))
         current_players = {}
+
         # Ask each player for their random words
         for x in range(numOfPlayers):
+            name = input(f"Hello Player {x + 1}! What is your name? ")
+            words = {}
+            words = story(words)
 
-            name, words = story_one(x)
             # Instantiates player object and checks to see if the same name is used as before
             player = Player(name, words)
             for past_player in all_players:
                 if name == past_player.name:
                     player.score = past_player.score
+                    all_players.remove(past_player)
                     input(
                         f'\nWelcome back {name}! Your score is {player.score}. Press Enter to continue.')
                     break
@@ -43,11 +47,11 @@ while True:
             current_players[vote].vote += 1
 
         # Votes are compared and winner is announced
-        most_votes = []
+        votes = []
         for player in current_players:
-            most_votes.append(current_players[player])
-        winner = most_votes[0]
-        for player in most_votes:
+            votes.append(current_players[player])
+        winner = votes[0]
+        for player in votes:
             if player.vote > winner.vote:
                 winner = player
         winner.score += 1
