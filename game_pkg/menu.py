@@ -33,15 +33,19 @@ def show_leaderboards(players):
 
     high_idx = len(leaderboards) - 1
 
-    for i in range(high_idx):
-        for j in range(high_idx):
-            score = leaderboards[j].score
-            next_score = leaderboards[j+1].score
-            player = leaderboards[j]
-            next_player = leaderboards[j+1]
-            if score < next_score:
-                leaderboards[j] = next_player
-                leaderboards[j+1] = player
-
+    for j in range(high_idx):
+        score = leaderboards[j].score
+        next_score = leaderboards[j+1].score
+        player = leaderboards[j]
+        next_player = leaderboards[j+1]
+        if score < next_score:
+            leaderboards[j] = next_player
+            leaderboards[j+1] = player
+    print("------------------------------------------")
+    print("|    Player                Score         |")
+    print("------------------------------------------")
+    position = len(leaderboards) - 1
     for player in leaderboards:
-        print(player.name, player.score)
+        print(
+            f'\n    {position}.{player.name}                      {player.score}')
+        position += 1
