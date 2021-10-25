@@ -1,6 +1,5 @@
 
 """This module handles the MySQL database interactions by adding players to it and updating all player's scores during each game"""
-
 import mysql.connector
 from game_pkg.player import Player
 import config

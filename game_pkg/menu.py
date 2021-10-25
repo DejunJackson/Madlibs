@@ -3,7 +3,7 @@
 
 def main_menu():
     print()
-    print("          === Multiplayer Madlibs ===          ")
+    print("          === Madlibs Showdown ===          ")
     print()
     print("------------------------------------------")
     print("| 1. Start Game                          |")
