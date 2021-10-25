@@ -1,3 +1,6 @@
+"""This module holds the menu and leaderboard screen"""
+
+
 def main_menu():
     print()
     print("          === Multiplayer Madlibs ===          ")
@@ -27,34 +30,29 @@ def show_leaderboards(players):
             f'\n     1.{players[0].name}                    {players[0].score}')
     else:
         for player in players:
-            dup = False
-            duplicate = player
+            leaderboards.append(player)
+        high_idx = len(leaderboards) - 1
 
-            for player_check in leaderboards:
-                if duplicate.name == player_check.name:
-                    dup = True
-                    break
+        # Uses bubble sort to sort players by scores
+        for i in range(len(leaderboards)):
+            for j in range(high_idx):
+                score = leaderboards[j].score
+                next_score = leaderboards[j+1].score
+                player = leaderboards[j]
+                next_player = leaderboards[j+1]
 
-            if dup == False:
-                leaderboards.append(duplicate)
+                if score < next_score:
+                    leaderboards[j] = next_player
+                    leaderboards[j+1] = player
 
-    high_idx = len(leaderboards) - 1
+        print("------------------------------------------")
+        print("|    Player                Score         |")
+        print("------------------------------------------")
 
-    for j in range(high_idx):
-        score = leaderboards[j].score
-        next_score = leaderboards[j+1].score
-        player = leaderboards[j]
-        next_player = leaderboards[j+1]
+        # prints player name and score after being ordered
+        position = 1
+        for player in leaderboards:
+            print(
+                f'\n    {position}.{player.name:<23} {player.score}')
 
-        if score < next_score:
-            leaderboards[j] = next_player
-            leaderboards[j+1] = player
-
-    print("------------------------------------------")
-    print("|    Player                Score         |")
-    print("------------------------------------------")
-    position = len(leaderboards) - 1
-    for player in leaderboards:
-        print(
-            f'\n    {position}.{player.name}                      {player.score}')
-        position += 1
+            position += 1

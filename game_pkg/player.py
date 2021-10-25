@@ -1,3 +1,5 @@
+"""This module holds the class for each player"""
+
 from game_pkg.stories import story
 
 
@@ -10,3 +12,7 @@ class Player:
 
     def read_story(self):
         print(story(self.words))
+
+    def reset(self):
+        self.words = {}
+        self.vote = 0

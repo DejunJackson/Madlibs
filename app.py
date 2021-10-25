@@ -1,10 +1,15 @@
+"""This module is the main game loop"""
 from game_pkg.player import Player
 from game_pkg.menu import main_menu, show_leaderboards
 from game_pkg.stories import story
+from game_pkg.database import add_to_database, update_all_players
 
-all_players = []
+
 while True:
-    # Ask how many players there are and names
+    all_players = []
+
+    # appends all the players from the database to the all_players list
+    update_all_players(all_players)
     choice = main_menu()
     if choice == '1' or choice == 'start game':
         print("Welcome!")
@@ -15,20 +20,22 @@ while True:
         for x in range(numOfPlayers):
             name = input(f"Hello Player {x + 1}! What is your name? ")
             words = {}
-            words = story(words)
 
-            # Instantiates player object and checks to see if the same name is used as before
-            player = Player(name, words)
+            # if a player uses same name as in database, it uses the player from db in the current game
+            found = False
             for past_player in all_players:
                 if name == past_player.name:
-                    player.score = past_player.score
-                    all_players.remove(past_player)
-                    input(
-                        f'\nWelcome back {name}! Your score is {player.score}. Press Enter to continue.')
+                    player = past_player
+                    words = story(words)
+                    player.words = words
+                    found = True
                     break
 
+            # if player name is not in db, it creates new player object
+            if found == False:
+                words = story(words)
+                player = Player(name, words)
             current_players[name] = player
-            all_players.insert(0, player)
 
         # Print the name of player and their answers
         for player in current_players:
@@ -54,10 +61,19 @@ while True:
         for player in votes:
             if player.vote > winner.vote:
                 winner = player
-        winner.score += 1
-        print('\nYour winner is', winner.name + '!')
 
-        # Ask if they want to play again
+        winner.score += 1
+
+        print('\nYour winner is', winner.name, 'with', winner.vote, 'votes!')
+
+        # Resets players votes and words before adding to db
+        for player in current_players:
+            current_players[player].reset()
+
+        # Adds the players in current game to to database
+        add_to_database(current_players)
+
+        # Continue game loop
         input("\nPress enter to go back to main menu. ")
 
     elif choice == '2' or choice == 'leaderboards':

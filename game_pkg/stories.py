@@ -1,3 +1,4 @@
+"""This Module holds all the possible stories and queries to collect those stories"""
 import random
 
 
@@ -68,4 +69,5 @@ def story_two(words):
                 f"we can go swimming in our new {words['noun3']} {words['silly_word2']}.\n")
 
 
+# Selects random stories to play for each game
 story = random.choice([story_one, story_two])
