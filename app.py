@@ -3,22 +3,26 @@ from game_pkg.player import Player
 from game_pkg.menu import main_menu, show_leaderboards
 from game_pkg.stories import story
 from game_pkg.database import add_to_database, update_all_players
+from game_pkg.validation import validate_name, validate_vote
 
 
 while True:
     all_players = []
 
-    # appends all the players from the database to the all_players list
+    # appends all the players from the database to the all_players list for each game
     update_all_players(all_players)
     choice = main_menu()
     if choice == '1' or choice == 'start game':
-        print("Welcome!")
-        numOfPlayers = int(input("How many Players are there? "))
+        print("\nWelcome!")
+        numOfPlayers = int(input("\nHow many Players are there? "))
         current_players = {}
 
         # Ask each player for their random words
         for x in range(numOfPlayers):
-            name = input(f"Hello Player {x + 1}! What is your name? ")
+
+            # Makes sure name entered is between 2 and 10 characters
+            name = validate_name(x)
+
             words = {}
 
             # if a player uses same name as in database, it uses the player from db in the current game
@@ -35,11 +39,13 @@ while True:
             if found == False:
                 words = story(words)
                 player = Player(name, words)
+
+            # adds player to list of players in current game
             current_players[name] = player
 
         # Print the name of player and their answers
         for player in current_players:
-            print("\nHere is", current_players[player].name + "'s story:")
+            print("\nHere is", str(current_players[player].name) + "'s story:")
             current_players[player].read_story()
             input("Press enter to continue.")
 
@@ -49,8 +55,9 @@ while True:
             for votee in current_players:
                 print(f"\n{i}. {current_players[votee].name}")
                 i += 1
-            vote = input(
-                f"\nHi {current_players[voter].name}. Enter the name of the person you want to vote for: ")
+            vote = validate_vote(
+                current_players[voter].name, current_players)
+
             current_players[vote].vote += 1
 
         # Votes are compared and winner is announced
@@ -58,6 +65,7 @@ while True:
         for player in current_players:
             votes.append(current_players[player])
         winner = votes[0]
+
         for player in votes:
             if player.vote > winner.vote:
                 winner = player
