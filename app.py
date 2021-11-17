@@ -1,8 +1,8 @@
 """This module is the main game loop"""
 from game_pkg.player import Player
-from game_pkg.menu import main_menu, show_leaderboards
+from game_pkg.menu import main_menu
 from game_pkg.stories import story
-from game_pkg.database import add_to_database, update_all_players
+from game_pkg.database import add_to_database, update_all_players, show_leaderboards
 from game_pkg.validation import validate_name, validate_vote
 
 
@@ -85,7 +85,7 @@ while True:
         input("\nPress enter to go back to main menu. ")
 
     elif choice == '2' or choice == 'leaderboards':
-        show_leaderboards(all_players)
+        show_leaderboards()
 
     elif choice == '3' or choice == 'exit':
         print("\nSee you later!")

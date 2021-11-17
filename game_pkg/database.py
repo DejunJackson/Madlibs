@@ -54,3 +54,38 @@ def update_all_players(all_players):
     connection.commit()
     cursor.close()
     return all_players
+
+# Queries database, orders by score in descending order and displays leaderboard
+
+
+def show_leaderboards():
+    connection = mysql.connector.connect(
+        host=config.host_name, user=config.user_name, passwd=config.db_passwd, database=config.database_name)
+
+    cursor = connection.cursor(buffered=True)
+
+    cursor.execute(
+        """SELECT PlayerName, PlayerScore from player ORDER BY PlayerScore DESC""")
+    records = cursor.fetchall()
+    if len(records) == 0:
+        print('\nThere are no scores to print at this time. Go play some games!')
+    elif len(records) == 1:
+        print("------------------------------------------")
+        print("|    Player                Score         |")
+        print("------------------------------------------")
+        print(
+            f'\n     1.{records[0]}                    {records[1]}')
+    else:
+        position = 1
+        print("------------------------------------------")
+        print("|    Player                Score         |")
+        print("------------------------------------------")
+        for row in records:
+
+            print(
+                f'\n    {position}.{row[0]:<23} {row[1]}')
+
+            position += 1
+
+    connection.commit()
+    cursor.close()
